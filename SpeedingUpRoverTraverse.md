@@ -240,6 +240,7 @@ module Shader =
                 else
                     v.c
             return { v with c = c }
+        }
 ```
 
 What are the costs and limits? Well geometry processing on the GPU and again the quite dense loop which multiplies the trafos.
