@@ -44,22 +44,21 @@ What is visualized with trajectories? Texts, Spheres and lines between the Rover
 
 Let us look at the code for the text (which was suspect nr one):
 ```
+let drawSolText view near (model : AdaptiveTraverse) =
+    alist {
+        let! sols = model.sols
+        let! showText = model.showText
 
-        let drawSolText view near (model : AdaptiveTraverse) =
-            alist {
-                let! sols = model.sols
-                let! showText = model.showText
-     
-                if showText then
-                    for sol in sols do
-                        let loc = ~~(sol.location + sol.location.Normalized * 1.5)
-                        let trafo = loc |> AVal.map Trafo3d.Translation
-                        
-                        yield Sg.text view near (AVal.constant 60.0) loc trafo model.tTextSize.value  (~~sol.solNumber.ToString()) (AVal.constant C4b.White)
-            } 
-            |> ASet.ofAList 
-            |> Sg.set
-            |> Sg.onOff model.isVisibleT
+        if showText then
+            for sol in sols do
+                let loc = ~~(sol.location + sol.location.Normalized * 1.5)
+                let trafo = loc |> AVal.map Trafo3d.Translation
+                
+                yield Sg.text view near (AVal.constant 60.0) loc trafo model.tTextSize.value  (~~sol.solNumber.ToString()) (AVal.constant C4b.White)
+    } 
+    |> ASet.ofAList 
+    |> Sg.set
+    |> Sg.onOff model.isVisibleT
 ```
 
 Ah interesting, there is an alist loop mapping all sols to a particular Sg.text instance.
